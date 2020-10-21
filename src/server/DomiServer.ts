@@ -1,22 +1,33 @@
-namespace Domi {
-    export const services = new Map<string, IService>()
-    export let started = false
+export interface IService {
+    Name: string
 
-    interface IService {
-        Name: string
-        Client?: IServiceClient
+    DomiInit?: () => void
+    DomiStart?: () => void
+}
 
-        DomiInit?: () => void
-        DomiStart?: () => void
+type ServiceClass<T = IService> = new () => T
+
+namespace DomiServer {
+    export const Services = new Map<string, IService>()
+    let started = false
+
+    /**
+     * Registers a service with Domi. Must be called before using Domi.Start()
+     * @param service The Domi service to register
+     */
+    export const RegisterService = (service: ServiceClass) => {
+        assert(!started, 'Cannot register a service if Domi has already started')
+
+        const constructedService = new service()
+        assert(!Services.get(constructedService.Name), `Service ${constructedService.Name} already exists`)
+        Services.set(constructedService.Name, constructedService)
+
+        return constructedService
     }
 
-    interface IServiceClient {}
-
-    export const CreateService = (service: IService) => {
-        assert(!services.get(service.Name), `Service ${service.Name} already exists`)
-        services.set(service.Name, service)
-    }
-
+    /**
+     * Starts Domi. Fist it initializes all services registered and then starts them.
+     */
     export const Start = async () => {
         if (started) throw 'Domi already started'
         started = true
@@ -26,7 +37,7 @@ namespace Domi {
 
             // Init
             const startServicePromises: Promise<void>[] = []
-            services.forEach((service) => {
+            Services.forEach((service) => {
                 if (service.DomiInit !== undefined) {
                     startServicePromises.push(
                         new Promise((r) => {
@@ -39,7 +50,7 @@ namespace Domi {
             resolve(Promise.all(startServicePromises))
         }).then(() => {
             // Start
-            services.forEach((service) => {
+            Services.forEach((service) => {
                 if (service.DomiStart !== undefined) {
                     service.DomiStart()
                 }
@@ -48,4 +59,4 @@ namespace Domi {
     }
 }
 
-export = Domi
+export default DomiServer
