@@ -2,8 +2,14 @@ import DomiServer, { IService } from './DomiServer'
 
 class TestService implements IService {
     Name = 'TestService'
+    Client = {
+        HelloWorld() {
+            return 'Hello, world!'
+        },
+    }
 
-    DomiInit() {
+    async DomiInit() {
+        wait(5)
         print('Init from server')
     }
 

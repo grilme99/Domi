@@ -1,11 +1,22 @@
 export interface IService {
     Name: string
+    Client?: { [key: string]: unknown }
 
     DomiInit?: () => void
     DomiStart?: () => void
 }
 
 type ServiceClass<T = IService> = new () => T
+
+/**
+ * Helper method to spawn a thread
+ */
+const SpawnThread = (func: Function, ...args: unknown[]) => {
+    const bindable = new Instance('BindableEvent')
+    bindable.Event.Connect(() => func(...args))
+    bindable.Fire()
+    bindable.Destroy()
+}
 
 namespace DomiServer {
     export const Services = new Map<string, IService>()
@@ -40,8 +51,8 @@ namespace DomiServer {
             Services.forEach((service) => {
                 if (service.DomiInit !== undefined) {
                     startServicePromises.push(
-                        new Promise((r) => {
-                            service.DomiInit!()
+                        new Promise(async (r) => {
+                            await service.DomiInit!()
                             r()
                         }),
                     )
@@ -52,7 +63,7 @@ namespace DomiServer {
             // Start
             Services.forEach((service) => {
                 if (service.DomiStart !== undefined) {
-                    service.DomiStart()
+                    SpawnThread(service.DomiStart)
                 }
             })
         })
