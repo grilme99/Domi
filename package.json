@@ -1,0 +1,25 @@
+{
+    "name": "domi",
+    "version": "1.0.0",
+    "description": "My personal game framework written in Typescript, inspired by Knit",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "compile": "rbxtsc",
+        "build": "npm run compile && rojo build --output ProjectBuild.rbxlx"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "devDependencies": {
+        "@rbxts/types": "^1.0.420",
+        "@typescript-eslint/eslint-plugin": "^4.5.0",
+        "@typescript-eslint/parser": "^4.5.0",
+        "eslint": "^7.11.0",
+        "eslint-config-prettier": "^6.14.0",
+        "eslint-plugin-prettier": "^3.1.4",
+        "eslint-plugin-roblox-ts": "0.0.24",
+        "prettier": "^2.1.2",
+        "typescript": "^4.0.3"
+    }
+}
