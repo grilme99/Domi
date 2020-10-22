@@ -1,8 +1,11 @@
 export interface IService {
+    /** Unique name of the service */
     Name: string
+    /** Everything here will be exposed to the client. */
     Client?: { [key: string]: unknown }
-
+    /** This method is called first and is where you should create all of your connections. */
     DomiInit?: () => void
+    /** This method is called when all other services have initialized. It is now safe to reference other services. */
     DomiStart?: () => void
 }
 
