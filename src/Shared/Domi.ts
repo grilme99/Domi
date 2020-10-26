@@ -39,6 +39,7 @@ namespace DomiServer {
 
     /**
      * Starts Domi. Fist it initializes all resources registered and then starts them.
+     * You **cannot** register any resources after this point.
      */
     export const Start = async () => {
         if (started) throw 'Domi already started'
