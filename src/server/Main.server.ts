@@ -1,12 +1,7 @@
-import DomiServer, { IService } from './DomiServer'
+import DomiServer, { IResource } from './Domi'
 
-class TestService implements IService {
+class TestService implements IResource {
     Name = 'TestService'
-    Client = {
-        HelloWorld() {
-            return 'Hello, world!'
-        },
-    }
 
     async DomiInit() {
         wait(5)
@@ -18,7 +13,7 @@ class TestService implements IService {
     }
 }
 
-DomiServer.RegisterService(TestService)
+DomiServer.RegisterResource(TestService)
 DomiServer.Start().then(() => {
     print('Finished starting')
 })
