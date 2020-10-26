@@ -1,19 +1,7 @@
-import DomiServer, { IResource } from './Domi'
+import Domi from 'Shared/Domi'
+import TestService from './Services/TestService'
 
-class TestService implements IResource {
-    Name = 'TestService'
-
-    async DomiInit() {
-        wait(5)
-        print('Init from server')
-    }
-
-    DomiStart() {
-        print('Start from server')
-    }
-}
-
-DomiServer.RegisterResource(TestService)
-DomiServer.Start().then(() => {
-    print('Finished starting')
+Domi.RegisterResource(TestService)
+Domi.Start().then(() => {
+    print('Finished starting from server')
 })
