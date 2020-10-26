@@ -19,7 +19,7 @@ const SpawnThread = (func: Function, ...args: unknown[]) => {
     bindable.Destroy()
 }
 
-namespace DomiServer {
+namespace Domi {
     export const Services = new Map<string, IResource>()
     let started = false
 
@@ -70,4 +70,4 @@ namespace DomiServer {
     }
 }
 
-export default DomiServer
+export default Domi
